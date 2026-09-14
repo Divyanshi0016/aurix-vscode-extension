@@ -1,10 +1,10 @@
-# AURIX VS Code Extension — Divyanshi's Component
+# AURIX VS Code Extension 
 
 Scaffold for the "IDE & Integration Engineer" role, updated to match the
 **VS Code Extension Integration Roadmap** exactly (upload field names,
 status values, project_id requirement).
 
-## Connecting to Bhavya's real backend
+## Connecting to real backend
 
 1. Base URL is already set as the default: `https://major-project-yo0n.onrender.com`
    — this is set in `aurix.apiEndpoint`. **Do not** point it at any
@@ -30,22 +30,13 @@ status values, project_id requirement).
 
 **Still unconfirmed with the team:** exactly how a `project_id` is created
 and where its UUID is surfaced to the user — nothing in the docs says this
-yet. Ask Bhavya/Bhumika before your first real scan.
+yet.
 
 **Field-name discrepancy to watch:** the roadmap PDF prose says findings use
 `file_path`/`line_number`, but the real sample JSON from Divyansh's engine
 uses `file`/`line`. This client (`apiConnector.ts`) supports both defensively
 via `findingFile()`/`findingLine()` helpers, but confirm which one the live
 backend actually sends so you're not silently relying on a fallback.
-
-## Local mock backend (still works, now matches the real contract)
-
-```bash
-node mock-server/server.js
-```
-Returns your real 13-finding sample report after ~8s, using the same field
-names, status values, and response shape as the real backend per the
-roadmap — so testing locally now accurately predicts real-backend behavior.
 
 ## Getting started
 
