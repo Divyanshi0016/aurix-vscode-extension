@@ -1,8 +1,6 @@
 # AURIX VS Code Extension 
 
-Scaffold for the "IDE & Integration Engineer" role, updated to match the
-**VS Code Extension Integration Roadmap** exactly (upload field names,
-status values, project_id requirement).
+Scaffold for the "IDE & Integration Engineer" role.
 
 ## Connecting to real backend
 
@@ -11,22 +9,10 @@ status values, project_id requirement).
    `/api/internal/webhook/...` path — that's server-to-server only, between
    backend and AWS worker.
 2. You need a **Project ID** before you can scan. Run `AURIX: Set Project ID`
-   and paste the UUID (ask Bhavya/Bhumika how a project gets created — likely
-   via the Web Dashboard first).
+   and paste the UUID.
 3. Log in with `AURIX: Login` using real AURIX credentials.
 4. Run a scan. First request may be slow (~30-60s) if Render's free tier has
    spun the server down from inactivity — that's normal, not a bug.
-
-## What changed from earlier drafts, per the real roadmap doc
-
-| Item | Old assumption | Actual (roadmap) |
-|---|---|---|
-| Upload form field | `file` | `source_code` (+ required `project_id`) |
-| Upload success status | 200 | 202 Accepted |
-| Poll response shape | `{status, report: {...}}` | flat: `{scan_id, status, findings, summary, ...}` |
-| Status values | `queued/running/completed/failed` | `PENDING/SCANNING/COMPLETED/FAILED` |
-| Upload size limit | none enforced | 10MB — now checked client-side before upload (`aurix.maxUploadMb`) |
-| Typical scan time | assumed short | 2-3 min typical (roadmap) — some team docs say up to 15 min; timeout defaults to 300s, raise via `aurix.scanTimeout` if needed |
 
 ## Getting started
 
