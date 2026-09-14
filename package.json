@@ -1,0 +1,160 @@
+{
+  "name": "aurix-vscode",
+  "displayName": "AURIX Security Scanner",
+  "description": "AI-powered security scanning for your local workspace, right inside VS Code.",
+  "version": "0.3.0",
+  "publisher": "aurix",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aurix/aurix-vscode-extension"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other",
+    "Linters"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "aurix",
+          "title": "AURIX",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "aurix": [
+        {
+          "id": "aurixSidebar",
+          "name": "AURIX",
+          "type": "webview"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "aurix.login",
+        "title": "AURIX: Login"
+      },
+      {
+        "command": "aurix.logout",
+        "title": "AURIX: Logout"
+      },
+      {
+        "command": "aurix.setProjectId",
+        "title": "AURIX: Set Project ID"
+      },
+      {
+        "command": "aurix.scanWorkspace",
+        "title": "AURIX: Scan Full Workspace"
+      },
+      {
+        "command": "aurix.scanActiveFile",
+        "title": "AURIX: Scan Active File"
+      },
+      {
+        "command": "aurix.scanStagedChanges",
+        "title": "AURIX: Scan Staged Changes"
+      },
+      {
+        "command": "aurix.showAttackPath",
+        "title": "AURIX: Show Attack Path"
+      },
+      {
+        "command": "aurix.applyPatch",
+        "title": "AURIX: Apply AI Security Patch"
+      },
+      {
+        "command": "aurix.openMissionControl",
+        "title": "AURIX: Open Mission Control Dashboard"
+      },
+      {
+        "command": "aurix.reviewPatch",
+        "title": "AURIX: Review Patch (Split Diff)"
+      },
+      {
+        "command": "aurix.autoFixAll",
+        "title": "AURIX: Auto-Fix All Vulnerabilities"
+      },
+      {
+        "command": "aurix.exportHtmlReport",
+        "title": "AURIX: Export HTML Security Report"
+      },
+      {
+        "command": "aurix.viewHistory",
+        "title": "AURIX: View Scan History"
+      }
+    ],
+    "configuration": {
+      "title": "AURIX",
+      "properties": {
+        "aurix.apiEndpoint": {
+          "type": "string",
+          "default": "https://major-project-yo0n.onrender.com",
+          "description": "Base URL of the AURIX backend API."
+        },
+        "aurix.projectId": {
+          "type": "string",
+          "default": "",
+          "description": "The AURIX project UUID this workspace maps to."
+        },
+        "aurix.scanTimeout": {
+          "type": "number",
+          "default": 300,
+          "description": "Seconds to wait before a scan request times out."
+        },
+        "aurix.maxUploadMb": {
+          "type": "number",
+          "default": 10,
+          "description": "Client-side guard matching the backend upload limit."
+        },
+        "aurix.extraIgnorePatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Extra glob patterns to exclude from the zip payload."
+        },
+        "aurix.enableAiSecretGuard": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use the AI/LLM-based secret guard before upload."
+        },
+        "aurix.enableGhostTextPatches": {
+          "type": "boolean",
+          "default": true,
+          "description": "Stream AI patches as inline ghost text suggestions."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "node node_modules/typescript/lib/tsc.js -p ./",
+    "watch": "node node_modules/typescript/lib/tsc.js -watch -p ./",
+    "package": "vsce package --no-git-tag-version"
+  },
+  "devDependencies": {
+    "@types/archiver": "^6.0.2",
+    "@types/node": "^20.11.0",
+    "@types/node-fetch": "^2.6.11",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.9.2",
+    "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.116.0",
+    "archiver": "^6.0.1",
+    "form-data": "^4.0.0",
+    "ignore": "^5.3.1",
+    "node-fetch": "^2.7.0"
+  }
+}

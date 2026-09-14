@@ -1,0 +1,9 @@
+.vscode/**
+.vscode-test/**
+src/**
+tsconfig.json
+mock-server/**
+demo-workspace/**
+tsc-final.txt
+*.vsix
+.gitignore

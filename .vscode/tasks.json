@@ -1,0 +1,13 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "command": "node node_modules/typescript/lib/tsc.js -p ./",
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": ["$tsc"],
+      "presentation": { "reveal": "silent" },
+      "label": "npm: compile"
+    }
+  ]
+}
