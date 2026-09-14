@@ -9,7 +9,7 @@ status values, project_id requirement).
 1. Base URL is already set as the default: `https://major-project-yo0n.onrender.com`
    — this is set in `aurix.apiEndpoint`. **Do not** point it at any
    `/api/internal/webhook/...` path — that's server-to-server only, between
-   Bhavya's backend and Divyansh's AWS worker.
+   backend and AWS worker.
 2. You need a **Project ID** before you can scan. Run `AURIX: Set Project ID`
    and paste the UUID (ask Bhavya/Bhumika how a project gets created — likely
    via the Web Dashboard first).
@@ -27,16 +27,6 @@ status values, project_id requirement).
 | Status values | `queued/running/completed/failed` | `PENDING/SCANNING/COMPLETED/FAILED` |
 | Upload size limit | none enforced | 10MB — now checked client-side before upload (`aurix.maxUploadMb`) |
 | Typical scan time | assumed short | 2-3 min typical (roadmap) — some team docs say up to 15 min; timeout defaults to 300s, raise via `aurix.scanTimeout` if needed |
-
-**Still unconfirmed with the team:** exactly how a `project_id` is created
-and where its UUID is surfaced to the user — nothing in the docs says this
-yet.
-
-**Field-name discrepancy to watch:** the roadmap PDF prose says findings use
-`file_path`/`line_number`, but the real sample JSON from Divyansh's engine
-uses `file`/`line`. This client (`apiConnector.ts`) supports both defensively
-via `findingFile()`/`findingLine()` helpers, but confirm which one the live
-backend actually sends so you're not silently relying on a fallback.
 
 ## Getting started
 
