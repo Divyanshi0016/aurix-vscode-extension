@@ -79,6 +79,9 @@ export class AurixSidebarProvider implements vscode.WebviewViewProvider {
         case "openMissionControl":
           await vscode.commands.executeCommand("aurix.openMissionControl");
           break;
+        case "openUserGuide":
+          await vscode.commands.executeCommand("aurix.openUserGuide");
+          break;
         case "viewHistory":
           await vscode.commands.executeCommand("aurix.viewHistory");
           break;
@@ -187,7 +190,10 @@ export class AurixSidebarProvider implements vscode.WebviewViewProvider {
         <div class="brand-name">AURIX Security</div>
         <div class="brand-sub">AI Workspace Scanner</div>
       </div>
-      <button class="btn ghost tiny" data-action="openMissionControl" style="margin-left:auto;">🚀 Dashboard</button>
+      <div style="margin-left:auto; display:flex; gap:4px;">
+        <button class="btn ghost tiny" data-action="openUserGuide" title="Open User Tour & Guide">❓ Tour</button>
+        <button class="btn ghost tiny" data-action="openMissionControl" title="Open Dashboard">🚀 Dashboard</button>
+      </div>
     </header>`;
   }
 
@@ -238,7 +244,7 @@ export class AurixSidebarProvider implements vscode.WebviewViewProvider {
 
   private scanHtml(): string {
     const s = this.state;
-    const disabled = !s.isLoggedIn || !s.projectId || s.scanning;
+    const disabled = !s.isLoggedIn || s.scanning;
     const patchableCount = s.findings.filter((f) => !!findingPatchCode(f)).length;
 
     const scanBtn = (mode: ScanMode, label: string) =>
@@ -285,7 +291,19 @@ export class AurixSidebarProvider implements vscode.WebviewViewProvider {
     if (s.scanning) {
       body = "";
     } else if (!s.hasScanned) {
-      body = `<div class="empty">No scan executed yet.</div>`;
+      body = /* html */ `
+      <div class="card tour-card">
+        <div style="font-weight: 700; font-size: 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; color: var(--vscode-textLink-foreground);">
+          🗺️ Quick User Tour — How to Use AURIX
+        </div>
+        <div style="font-size: 11.5px; line-height: 1.5; color: var(--vscode-descriptionForeground);">
+          <div style="margin-bottom: 6px;"><b>1. Sign In</b>: Click the <b>Sign in</b> button above to authenticate with Supabase.</div>
+          <div style="margin-bottom: 6px;"><b>2. Select Scan Mode</b>: Click <b>Scan Active File</b> or <b>Scan Full Workspace</b> above.</div>
+          <div style="margin-bottom: 6px;"><b>3. Auto-Fix</b>: View detected vulnerabilities and click <b>⚡ Apply</b> or <b>⚡ Auto-Fix All</b> to automatically patch code!</div>
+          <div style="margin-bottom: 4px;"><b>4. Mission Control</b>: Click <b>🚀 Dashboard</b> at top right for live AI execution logs & scorecards.</div>
+        </div>
+        <button class="btn primary tiny" data-action="openUserGuide" style="margin-top: 8px; width: 100%;">📖 Launch Full Guided User Tour</button>
+      </div>`;
     } else if (sorted.length === 0) {
       body = `<div class="empty">No verified vulnerabilities found. 🎉</div>`;
     } else {

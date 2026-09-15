@@ -2,11 +2,11 @@
   "name": "aurix-vscode",
   "displayName": "AURIX Security Scanner",
   "description": "AI-powered security scanning for your local workspace, right inside VS Code.",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "publisher": "aurix",
   "repository": {
     "type": "git",
-    "url": "https://github.com/aurix/aurix-vscode-extension"
+    "url": "https://github.com/Divyanshi0016/aurix-vscode-extension"
   },
   "engines": {
     "vscode": "^1.85.0"
@@ -90,6 +90,10 @@
       {
         "command": "aurix.viewHistory",
         "title": "AURIX: View Scan History"
+      },
+      {
+        "command": "aurix.openUserGuide",
+        "title": "AURIX: Open Getting Started Tour"
       }
     ],
     "configuration": {
@@ -107,7 +111,7 @@
         },
         "aurix.scanTimeout": {
           "type": "number",
-          "default": 300,
+          "default": 600,
           "description": "Seconds to wait before a scan request times out."
         },
         "aurix.maxUploadMb": {

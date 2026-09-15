@@ -17,6 +17,7 @@ import { registerPatchContentProvider, reviewPatch } from "./diffPatcher";
 import { autoFixAll } from "./autoFixer";
 import { exportHtmlReport } from "./reportExporter";
 import { ScanHistoryManager, showHistoryPanel } from "./scanHistory";
+import { showUserGuidePanel } from "./userGuideWebview";
 
 let currentFindings: Finding[] = [];
 
@@ -49,6 +50,15 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(AurixSidebarProvider.viewType, sidebarProvider)
   );
+
+  // Automatically open Getting Started Tour for brand new users on first install
+  const hasShownWelcome = context.globalState.get<boolean>("aurixHasShownWelcome");
+  if (!hasShownWelcome) {
+    context.globalState.update("aurixHasShownWelcome", true);
+    setTimeout(() => {
+      vscode.commands.executeCommand("aurix.openUserGuide");
+    }, 1200);
+  }
 
   // Command handlers
   context.subscriptions.push(
@@ -167,6 +177,12 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("aurix.viewHistory", () => {
       showHistoryPanel(scanHistory);
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("aurix.openUserGuide", () => {
+      showUserGuidePanel(context);
     })
   );
 

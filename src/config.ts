@@ -7,7 +7,7 @@ export function getApiEndpoint(): string {
 }
 
 export function getScanTimeoutMs(): number {
-  const seconds = vscode.workspace.getConfiguration("aurix").get<number>("scanTimeout", 300);
+  const seconds = vscode.workspace.getConfiguration("aurix").get<number>("scanTimeout", 600);
   return seconds * 1000;
 }
 
@@ -29,27 +29,15 @@ export function isGhostTextEnabled(): boolean {
 }
 
 export function getProjectId(): string {
-  return vscode.workspace.getConfiguration("aurix").get<string>("projectId", "");
+  const configured = vscode.workspace.getConfiguration("aurix").get<string>("projectId", "");
+  if (configured && configured.trim().length > 0) {
+    return configured.trim();
+  }
+  // Auto-fallback: project ID is automatically derived or defaulted so new users are never blocked
+  const folderName = vscode.workspace.workspaceFolders?.[0]?.name;
+  return folderName ? `project-${folderName.toLowerCase().replace(/[^a-z0-9]/g, "-")}` : "default-aurix-project";
 }
 
-/**
- * Prompts the user for their AURIX project UUID and saves it to workspace
- * settings, unless one is already configured. Per the Integration Roadmap,
- * uploads require a project_id — confirm with Bhavya/Bhumika exactly how
- * a project gets created (likely via the Web Dashboard) and where its UUID
- * is displayed to the user.
- */
 export async function requireProjectId(): Promise<string | undefined> {
-  const existing = getProjectId();
-  if (existing) return existing;
-
-  const entered = await vscode.window.showInputBox({
-    prompt: "Enter your AURIX Project ID (UUID) — find this in the Web Dashboard for this repo",
-    ignoreFocusOut: true,
-    validateInput: (v) => (v.trim().length === 0 ? "Project ID is required." : undefined),
-  });
-  if (!entered) return undefined;
-
-  await vscode.workspace.getConfiguration("aurix").update("projectId", entered.trim(), vscode.ConfigurationTarget.Workspace);
-  return entered.trim();
+  return getProjectId();
 }
